@@ -1,16 +1,24 @@
 ﻿using Gimma.Models;
+using Gimma.Repositories;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Gimma.Hubs
 {
     public class GameHub : Hub
     {
+        private readonly RandomStringRepository _randomStringRepository;
         private List<Game> _games = new();
+        
+        public GameHub(RandomStringRepository randomStringRepository)
+        {
+            _randomStringRepository = randomStringRepository;
+        }
 
         public async Task CreateGame(string userName)
         {
             var host = new Player(userName, Context.ConnectionId);
-            var game = new Game("my-game-id", host);
+            var gameId = _randomStringRepository.GenerateRandomString(4);
+            var game = new Game(gameId, host);
             
             _games.Add(game);
             
