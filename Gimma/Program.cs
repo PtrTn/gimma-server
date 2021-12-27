@@ -12,14 +12,27 @@ builder.Services.AddSignalR();
 
 var app = builder.Build();
 
+app.UseCors(o =>
+{
+    o.AllowAnyHeader();
+    o.AllowAnyMethod();
+    o.WithOrigins(new []{"http://localhost:3000", "https://localhost:3000", "https://localhost:7212"});
+    o.AllowCredentials();
+    o.SetIsOriginAllowed((string host) =>
+    {
+        return true;
+    });
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseExceptionHandler("/Error");
-    app.UseHsts();
+   // app.UseHsts();
 }
+
 
 app.MapControllers();
 
