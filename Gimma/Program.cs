@@ -1,4 +1,5 @@
 using System.Reflection;
+using Gimma.CommandHandlers;
 using Gimma.Dispatchers;
 using Gimma.Hubs;
 using Gimma.Repositories;
@@ -17,6 +18,10 @@ builder.Services.AddSwaggerGen(options =>
 });
 builder.Services.AddTransient<RandomStringRepository, RandomStringRepository>();
 builder.Services.AddTransient<EventDispatcher, EventDispatcher>();
+builder.Services.AddTransient<CreateGameCommandHandler, CreateGameCommandHandler>();
+builder.Services.AddTransient<JoinGameCommandHandler, JoinGameCommandHandler>();
+builder.Services.AddTransient<StartGameCommandHandler, StartGameCommandHandler>();
+builder.Services.AddSingleton<GameRepository, GameRepository>();
 
 var app = builder.Build();
 
