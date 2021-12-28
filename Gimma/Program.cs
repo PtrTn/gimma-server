@@ -10,7 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSignalR();
+var signalR = builder.Services.AddSignalR();
+if (builder.Environment.IsDevelopment())
+{
+    signalR.AddHubOptions<GameHub>(o => o.EnableDetailedErrors = true);
+}
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "Gimma websocket API", Version = "v1" });
