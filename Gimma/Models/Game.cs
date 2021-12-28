@@ -2,19 +2,34 @@
 
 public class Game
 {
-    public readonly string GameId;
-    public readonly Player Host;
-    public readonly List<Player> Players = new();
+    private readonly string _gameId;
+    private readonly Player _host;
+    private readonly List<Player> _players = new();
 
     public Game(string gameId, Player host)
     {
-        GameId = gameId;
-        Host = host;
-        Players.Add(host);
+        _gameId = gameId;
+        _host = host;
+        _players.Add(host);
     }
 
     public void Join(Player player)
     {
-        Players.Add(player);
+        _players.Add(player);
+    }
+
+    public string GetGameId()
+    {
+        return _gameId;
+    }
+
+    public string GetHostConnectionId()
+    {
+        return _host._connectionId;
+    }
+
+    public List<string> GetPlayerConnectionIds()
+    {
+        return _players.Select(o => o._connectionId).ToList();
     }
 }

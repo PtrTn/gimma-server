@@ -21,7 +21,7 @@ public class StartGameCommandHandler
         var game = _gameRepository.FetchByHostConnectionId(command.HostConnectionId);
         
         await _eventDispatcher.Dispatch(
-            new GameStartedResponse(game.Players.Select(o => o._connectionId).ToList())
+            new GameStartedResponse(game.GetPlayerConnectionIds())
         );
     }
 }
