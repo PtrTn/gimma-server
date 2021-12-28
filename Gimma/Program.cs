@@ -1,14 +1,20 @@
+using System.Reflection;
 using Gimma.Hubs;
+using Gimma.Repositories;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Gimma websocket API", Version = "v1" });
+    options.DocumentFilter<SignalRSwaggerGen.SignalRSwaggerGen>(new List<Assembly> { typeof(GameHub).Assembly });
+});
+builder.Services.AddTransient<RandomStringRepository, RandomStringRepository>();
 
 var app = builder.Build();
 
@@ -16,7 +22,7 @@ app.UseCors(o =>
 {
     o.AllowAnyHeader();
     o.AllowAnyMethod();
-    o.WithOrigins(new []{"http://localhost:3000", "https://localhost:3000", "https://localhost:7212"});
+    o.WithOrigins(new []{"http://localhost:3000"});
     o.AllowCredentials();
     o.SetIsOriginAllowed((string host) =>
     {
@@ -24,15 +30,13 @@ app.UseCors(o =>
     });
 });
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseExceptionHandler("/Error");
-   // app.UseHsts();
+    app.UseHsts();
 }
-
 
 app.MapControllers();
 
@@ -42,6 +46,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapHub<GameHub>("/chatHub");
+app.MapHub<GameHub>("/game");
 
 app.Run();

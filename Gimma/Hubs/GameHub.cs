@@ -1,9 +1,12 @@
 ﻿using Gimma.Models;
 using Gimma.Repositories;
 using Microsoft.AspNetCore.SignalR;
+using SignalRSwaggerGen.Attributes;
+using SignalRSwaggerGen.Enums;
 
 namespace Gimma.Hubs
 {
+    [SignalRHub(path: "/game", autoDiscover: AutoDiscover.MethodsAndArgs)]
     public class GameHub : Hub
     {
         private readonly RandomStringRepository _randomStringRepository;
