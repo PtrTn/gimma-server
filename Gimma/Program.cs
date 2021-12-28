@@ -1,4 +1,5 @@
 using System.Reflection;
+using Gimma.Dispatchers;
 using Gimma.Hubs;
 using Gimma.Repositories;
 using Microsoft.OpenApi.Models;
@@ -15,6 +16,7 @@ builder.Services.AddSwaggerGen(options =>
     options.DocumentFilter<SignalRSwaggerGen.SignalRSwaggerGen>(new List<Assembly> { typeof(GameHub).Assembly });
 });
 builder.Services.AddTransient<RandomStringRepository, RandomStringRepository>();
+builder.Services.AddTransient<EventDispatcher, EventDispatcher>();
 
 var app = builder.Build();
 

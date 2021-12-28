@@ -1,5 +1,7 @@
-﻿using Gimma.Models;
+﻿using Gimma.Dispatchers;
+using Gimma.Models;
 using Gimma.Repositories;
+using Gimma.ResponseDtos;
 using Microsoft.AspNetCore.SignalR;
 using SignalRSwaggerGen.Attributes;
 using SignalRSwaggerGen.Enums;
@@ -9,11 +11,13 @@ namespace Gimma.Hubs
     [SignalRHub(path: "/game", autoDiscover: AutoDiscover.MethodsAndArgs)]
     public class GameHub : Hub
     {
+        private readonly EventDispatcher _eventDispatcher;
         private readonly RandomStringRepository _randomStringRepository;
         private List<Game> _games = new();
         
-        public GameHub(RandomStringRepository randomStringRepository)
+        public GameHub(EventDispatcher eventDispatcher, RandomStringRepository randomStringRepository)
         {
+            _eventDispatcher = eventDispatcher;
             _randomStringRepository = randomStringRepository;
         }
 
@@ -24,8 +28,10 @@ namespace Gimma.Hubs
             var game = new Game(gameId, host);
             
             _games.Add(game);
-            
-            await Clients.Caller.SendAsync("GameCreated", "my-game-id");
+
+            await _eventDispatcher.Dispatch(
+                new GameCreatedResponse(gameId, host._connectionId)
+            );
         }
         
         public async Task JoinGame(string userName, string gameId)
@@ -38,8 +44,10 @@ namespace Gimma.Hubs
             }
 
             game.Join(player);
-            
-            await Clients.Caller.SendAsync("GameJoined");
+
+            await _eventDispatcher.Dispatch(
+                new GameJoinedResponse(player._connectionId)
+            );
         }
         
         public async Task StartGame()
@@ -50,7 +58,9 @@ namespace Gimma.Hubs
                 throw new Exception("Game not found");
             }
             
-            await Clients.Clients(game._players.Select(o => o._connectionId)).SendAsync("GameStarted");
+            await _eventDispatcher.Dispatch(
+                new GameStartedResponse(game._players.Select(o => o._connectionId).ToList())
+            );
         }
     }
 }
