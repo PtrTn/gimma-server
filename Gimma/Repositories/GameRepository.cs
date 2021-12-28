@@ -13,7 +13,7 @@ public class GameRepository
 
     public Game FetchByGameId(string gameId)
     {
-        var game = _games.FirstOrDefault(o => o._gameId == gameId);
+        var game = _games.FirstOrDefault(o => o.GameId == gameId);
         if (game == null)
         {
             throw new Exception("Game not found");
@@ -24,7 +24,7 @@ public class GameRepository
 
     public Game FetchByHostConnectionId(string hostConnectionId)
     {
-        var game = _games.FirstOrDefault(o => o._host._connectionId == hostConnectionId);
+        var game = _games.FirstOrDefault(o => o.Host._connectionId == hostConnectionId);
         if (game == null)
         {
             throw new Exception("Game not found");
