@@ -5,11 +5,11 @@ public class PromptRepository
     private static Random random = new Random();
     private readonly List<string> _prompts  = new List<string>
     {
-        "Je ziet een fietser met volle snelheid tegen een jongen in een rolstoel klappen",
-        "Je komt je buurman, die al weken alleen maar op thuisbezorgd en monster, voor het eerst in weken tegen",
-        "Je loopt in de sportschool per ongeluk tegen de schouder van die kleine veel te gespierde man aan",
-        "Je zit rustig op een bankje in het park, komt er opeens een kerel met een opa pet naast je zitten die een naald in z'n been zet",
-        "Je rijdt lekker op je opgevoerde scooter tot een Albino politie agent je naar een rollerbank stuurt"
+        "A bald cyclist races past you at full speed and smashes into a boy in a wheelchair",
+        "You meet your neighbour, who has been living on nothing but take-away and monster energy, for the first time in weeks",
+        "When walking around in the gym you accidentally brush shoulders with a very muscular dwarf",
+        "You're sitting on a park bench minding your own business, when suddenly a guy sits next to you and stabs a needle in his thigh",
+        "Driving around on your tuned moped you turn a corner and run into an albino-looking cop who points to a roller bench",
     };
     
     public List<string> GetPrompts(int amount)

@@ -5,6 +5,8 @@ public class Game
     private readonly string _gameId;
     private readonly Player _host;
     private readonly List<Player> _players = new();
+    private int _round;
+    private List<string> _prompts;
 
     public Game(string gameId, Player host)
     {
@@ -16,6 +18,21 @@ public class Game
     public void Join(Player player)
     {
         _players.Add(player);
+    }
+
+    public void StartGame(List<string> prompts)
+    {
+        _prompts = prompts;
+    }
+
+    public void NextRound()
+    {
+        _round++;
+    }
+
+    public string GetPromptForCurrentRound()
+    {
+        return _prompts.ElementAt(_round);
     }
 
     public string GetGameId()

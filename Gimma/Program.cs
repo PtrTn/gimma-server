@@ -17,6 +17,7 @@ builder.Services.AddSwaggerGen(options =>
     options.DocumentFilter<SignalRSwaggerGen.SignalRSwaggerGen>(new List<Assembly> { typeof(GameHub).Assembly });
 });
 builder.Services.AddTransient<RandomStringRepository, RandomStringRepository>();
+builder.Services.AddTransient<PromptRepository, PromptRepository>();
 builder.Services.AddTransient<EventDispatcher, EventDispatcher>();
 builder.Services.AddTransient<CreateGameCommandHandler, CreateGameCommandHandler>();
 builder.Services.AddTransient<JoinGameCommandHandler, JoinGameCommandHandler>();
