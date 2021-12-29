@@ -49,4 +49,9 @@ public class Game
     {
         return _players.Select(o => o._connectionId).ToList();
     }
+
+    public int GetPlayerCount()
+    {
+        return _players.Count;
+    }
 }

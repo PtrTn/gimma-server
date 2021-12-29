@@ -5,12 +5,14 @@ namespace Gimma.ResponseDtos;
 public class RoundStartedResponse: IResponse
 {
     private readonly string _prompt;
-    private readonly List<string> _playerConnectionIds;
+    private readonly List<string> _imageIds;
+    private readonly string _playerConnectionId;
 
-    public RoundStartedResponse(string prompt, List<string> playerConnectionIds)
+    public RoundStartedResponse(string prompt, List<string> imageIds, string playerConnectionId)
     {
         _prompt = prompt;
-        _playerConnectionIds = playerConnectionIds;
+        _imageIds = imageIds;
+        _playerConnectionId = playerConnectionId;
     } 
     
     public ResponseEventMethod GetMethod()
@@ -20,11 +22,15 @@ public class RoundStartedResponse: IResponse
 
     public List<string> GetConnectionIds()
     {
-        return _playerConnectionIds;
+        return new List<string> { _playerConnectionId };
     }
 
     public object GetData()
     {
-        return new { prompt = _prompt };
+        return new
+        {
+            prompt = _prompt,
+            imageIds = _imageIds,
+        };
     }
 }
