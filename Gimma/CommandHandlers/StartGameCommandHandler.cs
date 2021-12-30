@@ -29,8 +29,8 @@ public class StartGameCommandHandler
     {
         var game = _gameRepository.FetchByHostConnectionId(command.HostConnectionId);
         var prompts = _promptRepository.GetPrompts(5);
-        
-        game.StartGame(prompts);
+        var rounds = prompts.Select(prompt => new Round(prompt, game.GetPlayerConnectionIds())).ToList();
+        game.StartGame(new Rounds(rounds));
         
         await _eventDispatcher.Dispatch(
             new GameStartedResponse(game.GetPlayerConnectionIds())
@@ -41,9 +41,9 @@ public class StartGameCommandHandler
 
     private async Task StartRound(Game game)
     {
-        game.NextRound();
+        game.GetRounds().StartNextRound();
         
-        var prompt = game.GetPromptForCurrentRound();
+        var prompt = game.GetRounds().GetCurrentRound().GetPrompt();
         var images = _imageRepository.GetRandomImages(game.GetPlayerCount());
         var imagesPerPlayer = images.Chunk(6);
 

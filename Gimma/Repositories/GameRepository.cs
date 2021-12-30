@@ -32,4 +32,15 @@ public class GameRepository
 
         return game;
     }
+
+    public Game FetchByPlayerConnectionId(string playerConnectionId)
+    {
+        var game = _games.FirstOrDefault(o => o.GetPlayerConnectionIds().Contains(playerConnectionId));
+        if (game == null)
+        {
+            throw new Exception("Game not found");
+        }
+
+        return game;
+    }
 }

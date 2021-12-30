@@ -17,7 +17,7 @@ public class RoundStartedResponse: IResponse
     
     public ResponseEventMethod GetMethod()
     {
-        return ResponseEventMethod.GameStarted;
+        return ResponseEventMethod.RoundStarted;
     }
 
     public List<string> GetConnectionIds()

@@ -13,15 +13,18 @@ namespace Gimma.Hubs
         private readonly CreateGameCommandHandler _createGameCommandHandler;
         private readonly JoinGameCommandHandler _joinGameCommandHandler;
         private readonly StartGameCommandHandler _startGameCommandHandler;
+        private readonly SubmitAnswerCommandHandler _submitAnswerCommandHandler;
 
         public GameHub(
             CreateGameCommandHandler createGameCommandHandler,
             JoinGameCommandHandler joinGameCommandHandler,
-            StartGameCommandHandler startGameCommandHandler
+            StartGameCommandHandler startGameCommandHandler,
+            SubmitAnswerCommandHandler submitAnswerCommandHandler
         ) {
             _createGameCommandHandler = createGameCommandHandler;
             _joinGameCommandHandler = joinGameCommandHandler;
             _startGameCommandHandler = startGameCommandHandler;
+            _submitAnswerCommandHandler = submitAnswerCommandHandler;
         }
 
         public async Task CreateGame(CreateGameRequest request)
@@ -50,6 +53,12 @@ namespace Gimma.Hubs
         {
             var command = new StartGameCommand(Context.ConnectionId);
             await _startGameCommandHandler.Handle(command);
+        }
+        
+        public async Task SubmitAnswer(SubmitAnswerRequest request)
+        {
+            var command = new SubmitAnswerCommand(request.ImageId, Context.ConnectionId);
+            await _submitAnswerCommandHandler.Handle(command);
         }
     }
 }
