@@ -14,12 +14,12 @@ public class Rounds : Collection<Round>
 
     public Round GetCurrentRound()
     {
-        return _rounds.ElementAt(_currentRound);
+        return _rounds.ElementAt(_currentRound - 1);
     }
 
     public void StartNextRound()
     {
-        if (_rounds.Count >= _currentRound)
+        if (_currentRound >= _rounds.Count)
         {
             throw new Exception("Last round has been reached");
         }
